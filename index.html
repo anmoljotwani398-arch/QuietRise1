@@ -380,13 +380,21 @@
             border-bottom: 1px solid #EEE;
         }
 
-        .remove-btn {
+        /* Updated Small 'x' Delete Button Style */
+        .cart-remove-x {
             background: transparent;
-            border: 1px solid var(--danger);
-            color: var(--danger);
-            padding: 0.2rem 0.6rem;
-            border-radius: 4px;
+            border: none;
+            color: #888888;
+            font-size: 1.2rem;
+            font-weight: bold;
             cursor: pointer;
+            padding: 2px 8px;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+
+        .cart-remove-x:hover {
+            color: var(--danger);
         }
 
         .cart-total {
@@ -615,7 +623,7 @@
                             <div>${item.title}</div>
                             <strong>₹${item.price}</strong>
                         </div>
-                        <button class="remove-btn" onclick="removeFromCart('${item.title}')">Remove</button>
+                        <button class="cart-remove-x" onclick="removeFromCart('${item.title}')" aria-label="Remove item">×</button>
                     `;
                     cartList.appendChild(li);
                 });
