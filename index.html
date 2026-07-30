@@ -53,7 +53,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Shopping Bag Button */
         .cart-icon-wrapper {
             position: relative;
             background: transparent;
@@ -76,7 +75,6 @@
             transform: scale(1.08);
         }
 
-        /* WhatsApp-Style Notification Badge */
         .cart-badge {
             position: absolute;
             top: -2px;
@@ -193,7 +191,6 @@
             margin-bottom: 0.8rem;
         }
 
-        /* FAQ Accordion Styling */
         .faq-container {
             display: flex;
             flex-direction: column;
@@ -209,7 +206,6 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.03);
         }
 
-        /* Highlighted Question Block */
         .faq-question {
             background-color: var(--highlight);
             padding: 1rem 1.2rem;
@@ -246,7 +242,6 @@
             font-size: 0.95rem;
         }
 
-        /* Active State when Pressed */
         .faq-item.active .faq-arrow {
             transform: rotate(180deg);
         }
@@ -283,25 +278,11 @@
             display: flex;
             flex-direction: column;
             gap: 1rem;
-            position: relative;
-        }
-
-        .card-close-btn {
-            position: absolute;
-            top: 12px;
-            right: 15px;
-            background: transparent;
-            border: none;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #888;
-            cursor: pointer;
         }
 
         .course-header h2 {
             color: var(--primary);
             font-size: 1.4rem;
-            padding-right: 1.5rem;
         }
 
         .course-price {
@@ -521,8 +502,7 @@
 
         <div id="page-2" class="page">
             <div class="courses-grid">
-                <div class="course-card" id="course-card-1">
-                    <button class="card-close-btn" onclick="removeCourseCard('course-card-1')">x</button>
+                <div class="course-card">
                     <div class="course-header">
                         <h2>Course 1: Fundamentals</h2>
                         <div class="course-price">₹299</div>
@@ -531,8 +511,7 @@
                     <button class="add-to-cart-btn" onclick="addToCart('Course 1: Fundamentals', 299)">Add to Cart</button>
                 </div>
 
-                <div class="course-card" id="course-card-2">
-                    <button class="card-close-btn" onclick="removeCourseCard('course-card-2')">x</button>
+                <div class="course-card">
                     <div class="course-header">
                         <h2>Course 2: Advanced Masterclass</h2>
                         <div class="course-price">₹499</div>
@@ -586,13 +565,6 @@
         function toggleFaq(element) {
             const faqItem = element.parentElement;
             faqItem.classList.toggle('active');
-        }
-
-        function removeCourseCard(cardId) {
-            const card = document.getElementById(cardId);
-            if (card) {
-                card.style.display = 'none';
-            }
         }
 
         function toggleCart() {
