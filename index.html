@@ -3,694 +3,598 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuietRise - Learning Platform</title>
+    <title>QuietRise — Overcome Social Fear & Build Quiet Confidence</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
     <style>
+        /* ==========================================================================
+           1. COLOR PALETTE & SYSTEM
+           ========================================================================== */
         :root {
-            --primary: #6366F1;
-            --secondary: #22D3EE;
-            --bg-color: #0F172A;
-            --btn-color: #6366F1;
-            --btn-hover: #4F46E5;
-            --text-color: #F8FAFC;
-            --card-bg: #1E293B;
-            --danger: #F43F5E;
-            --badge-bg: #EF4444;
-            --highlight: #334155;
-            --border-color: #334155;
-            --subtext-color: #94A3B8;
+            --bg-parchment: #FDFBF7;
+            --bg-cream: #F5F0EB;
+            --bg-card: #FAF6F0;
+            --bg-dark-overlay: rgba(18, 32, 25, 0.5);
+            
+            --color-forest-green: #1B3B2B;
+            --color-forest-dark: #11261B;
+            --color-burgundy: #6B2D2D;
+            --color-antique-gold: #C29B38;
+            
+            --text-dark: #2B2B2B;
+            --text-muted: #5A5A5A;
+            --border-gold-subtle: rgba(194, 155, 56, 0.35);
+            --border-gold-solid: #C29B38;
+            
+            --font-display: 'Cinzel', Trajan, serif;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, sans-serif;
+            
+            --shadow-subtle: 0 4px 15px rgba(0, 0, 0, 0.04);
+            --shadow-card: 0 8px 25px rgba(27, 59, 43, 0.08);
+            --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        * {
+        /* ==========================================================================
+           2. GLOBAL RESETS & NO OVERFLOW
+           ========================================================================== */
+        *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden; /* Fixes horizontal scroll issue */
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            background-color: var(--bg-parchment);
+            color: var(--text-dark);
+            font-family: var(--font-sans);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
         }
 
-        header {
-            background-color: var(--card-bg);
-            color: var(--text-color);
-            padding: 0.8rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .logo {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--secondary);
-            letter-spacing: 0.5px;
-        }
-
-        .cart-icon-wrapper {
-            position: relative;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            padding: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .shopping-bag-svg {
-            width: 26px;
-            height: 26px;
-            stroke: var(--text-color);
-            transition: transform 0.2s;
-        }
-
-        .cart-icon-wrapper:hover .shopping-bag-svg {
-            transform: scale(1.08);
-        }
-
-        .cart-badge {
-            position: absolute;
-            top: -2px;
-            right: -2px;
-            background-color: var(--badge-bg);
-            color: white;
-            font-size: 0.72rem;
-            font-weight: bold;
-            min-width: 18px;
-            height: 18px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
-            border: 2px solid var(--card-bg);
-        }
-
-        /* White Notification Toast */
-        .notification-toast {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-20px);
-            background-color: #FFFFFF;
-            color: #0F172A;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-            border: 1px solid #E2E8F0;
-        }
-
-        .notification-toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .main-container {
-            flex: 1;
-            max-width: 900px;
-            width: 100%;
-            margin: 1.5rem auto;
-            padding: 0 1rem;
-        }
-
-        .page {
+        /* Page View Switcher */
+        .page-view {
             display: none;
+            animation: fadeIn 0.4s ease-in-out;
         }
 
-        .page.active {
+        .page-view.active {
             display: block;
         }
 
-        .hero-card {
-            background: var(--card-bg);
-            padding: 2.5rem 1.5rem;
-            border-radius: 12px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-serif);
+            color: var(--color-forest-green);
+            font-weight: 700;
+            line-height: 1.3;
+            word-wrap: break-word;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+            word-wrap: break-word;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        button, input {
+            font-family: inherit;
+            font-size: inherit;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-cream); }
+        ::-webkit-scrollbar-thumb { background: var(--color-antique-gold); border-radius: 4px; }
+
+        /* ==========================================================================
+           3. HEADER & RESPONSIVE NAVIGATION
+           ========================================================================== */
+        .top-bar {
+            background-color: var(--color-forest-green);
+            color: var(--color-antique-gold);
+            font-size: 0.8rem;
             text-align: center;
-            border-top: 5px solid var(--secondary);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            margin-bottom: 2rem;
+            padding: 0.5rem 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-family: var(--font-display);
+            border-bottom: 1px solid var(--border-gold-subtle);
         }
 
-        .hero-card h1 {
-            color: var(--text-color);
-            margin-bottom: 1rem;
-            font-size: 2rem;
-        }
-
-        .hero-card p {
-            color: var(--subtext-color);
-        }
-
-        .scroll-section {
-            margin: 2rem 0;
-        }
-
-        .scroll-section h2 {
-            color: var(--text-color);
-            margin-bottom: 0.5rem;
-            font-size: 1.4rem;
-        }
-
-        .scroll-subtitle {
-            font-size: 0.9rem;
-            color: var(--subtext-color);
-            margin-bottom: 1rem;
-        }
-
-        .horizontal-scroll-container {
-            display: flex;
-            gap: 1.2rem;
-            overflow-x: auto;
-            padding: 0.5rem 0.2rem 1.2rem 0.2rem;
-        }
-
-        .scroll-card {
-            flex: 0 0 260px;
-            background: var(--card-bg);
-            border-radius: 10px;
-            padding: 1.2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            border-top: 4px solid var(--primary);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .scroll-card h3 {
-            color: var(--text-color);
-            font-size: 1.15rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .scroll-card p {
-            font-size: 0.9rem;
-            color: var(--subtext-color);
-            margin-bottom: 1rem;
-        }
-
-        .preview-tag {
-            font-weight: bold;
-            color: var(--secondary);
-        }
-
-        .info-section {
-            background: var(--card-bg);
-            padding: 1.8rem 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            margin-bottom: 1.5rem;
-        }
-
-        .info-section h3 {
-            color: var(--text-color);
-            margin-bottom: 0.8rem;
-        }
-
-        .faq-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .faq-item {
-            background: var(--card-bg);
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-
-        .faq-question {
-            background-color: var(--highlight);
-            padding: 1rem 1.2rem;
-            font-weight: 600;
-            color: var(--text-color);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            user-select: none;
-            transition: background-color 0.2s;
-            border-left: 4px solid var(--primary);
-        }
-
-        .faq-question:hover {
-            background-color: #475569;
-        }
-
-        .faq-arrow {
-            font-size: 0.9rem;
-            transition: transform 0.3s ease;
-            color: var(--secondary);
-            font-weight: bold;
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            padding: 0 1.2rem;
-            transition: max-height 0.3s ease, padding 0.3s ease;
-            background-color: var(--card-bg);
-            color: var(--subtext-color);
-            line-height: 1.5;
-            font-size: 0.95rem;
-        }
-
-        .faq-item.active .faq-arrow {
-            transform: rotate(180deg);
-        }
-
-        .faq-item.active .faq-answer {
-            max-height: 200px;
-            padding: 1rem 1.2rem;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .features-list {
-            list-style: none;
-            padding: 0;
-            margin-top: 1rem;
-        }
-
-        .features-list li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--subtext-color);
-        }
-
-        .courses-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .course-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 1.5rem;
-            border-left: 5px solid var(--primary);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .course-card p {
-            color: var(--subtext-color);
-        }
-
-        .course-header h2 {
-            color: var(--text-color);
-            font-size: 1.4rem;
-        }
-
-        .course-price {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: var(--secondary);
-        }
-
-        .add-to-cart-btn {
-            background-color: var(--btn-color);
-            color: white;
-            border: none;
-            padding: 0.7rem 1.2rem;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
+        header {
+            background-color: var(--bg-cream);
+            border-bottom: 2px solid var(--border-gold-solid);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-subtle);
             width: 100%;
-            transition: background-color 0.2s;
         }
 
-        .add-to-cart-btn:hover {
-            background-color: var(--btn-hover);
-        }
-
-        .nav-footer {
-            background-color: var(--card-bg);
+        .header-wrapper {
+            max-width: 1280px;
+            margin: 0 auto;
             padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
-            position: sticky;
-            bottom: 0;
-            border-top: 1px solid var(--border-color);
-            z-index: 100;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        .nav-btn {
-            background-color: transparent;
-            border: 2px solid var(--primary);
-            color: var(--text-color);
-            padding: 0.6rem 1.5rem;
-            border-radius: 6px;
-            font-weight: 600;
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
             cursor: pointer;
         }
 
-        .nav-btn:disabled {
-            border-color: var(--border-color);
-            color: var(--subtext-color);
+        .logo-crest {
+            width: 38px;
+            height: 38px;
+            border: 2px solid var(--border-gold-solid);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--color-forest-green);
+            background: var(--bg-parchment);
+            flex-shrink: 0;
         }
 
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
+        .logo-text {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--color-forest-green);
+            letter-spacing: 1px;
+        }
+
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            position: relative;
+            padding-bottom: 2px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-account {
+            border: 1.5px solid var(--color-forest-green);
+            color: var(--color-forest-green);
+            background: transparent;
+            padding: 0.4rem 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            white-space: nowrap;
+        }
+
+        .btn-account:hover {
+            background-color: var(--color-forest-green);
+            color: var(--bg-parchment);
+        }
+
+        /* ==========================================================================
+           4. HERO & CONTENT SECTIONS
+           ========================================================================== */
+        .hero-section {
+            padding: 4rem 1.5rem;
+            text-align: center;
+            background: linear-gradient(180deg, var(--bg-cream) 0%, var(--bg-parchment) 100%);
+            border-bottom: 1px solid var(--border-gold-subtle);
+        }
+
+        .hero-content {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .hero-subtitle {
+            font-family: var(--font-display);
+            color: var(--color-antique-gold);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            color: var(--color-forest-green);
+            margin-bottom: 1.2rem;
+        }
+
+        .hero-description {
+            font-size: clamp(1rem, 2.5vw, 1.15rem);
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .btn-primary {
+            background-color: var(--color-forest-green);
+            color: var(--bg-parchment);
+            padding: 0.85rem 2rem;
+            font-size: 0.95rem;
+            border: 1px solid var(--color-antique-gold);
+            cursor: pointer;
+            border-radius: 4px;
+            font-family: var(--font-display);
+            letter-spacing: 1px;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+            max-width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-forest-dark);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3.5rem 1.5rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.8rem, 4vw, 2.4rem);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header h2::after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 2px;
+            background-color: var(--border-gold-solid);
+            margin: 0.8rem auto 0;
+        }
+
+        .single-course-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-gold-subtle);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+        }
+
+        .card-image-wrap {
+            height: 260px;
+            position: relative;
+        }
+
+        .card-image-wrap img {
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-            z-index: 200;
+            object-fit: cover;
+            filter: sepia(10%);
         }
 
-        .modal {
-            background: var(--card-bg);
-            color: var(--text-color);
-            padding: 1.5rem;
-            border-radius: 10px;
-            width: 100%;
-            max-width: 420px;
-            border: 1px solid var(--border-color);
+        .card-body {
+            padding: 1.8rem;
         }
 
-        .modal-header {
+        .course-title {
+            font-size: 1.8rem;
+            margin-bottom: 0.4rem;
+            color: var(--color-forest-green);
+        }
+
+        .instructor-name {
+            font-size: 0.95rem;
+            color: var(--color-burgundy);
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            font-style: italic;
+        }
+
+        .card-footer {
+            margin-top: 1.8rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 0.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding-top: 1.2rem;
+            border-top: 1px dashed var(--border-gold-subtle);
         }
 
-        .close-btn {
+        .price-tag {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--color-forest-green);
+            font-family: var(--font-serif);
+        }
+
+        /* FAQ Styling */
+        .faq-wrapper { max-width: 850px; margin: 0 auto; }
+        .faq-item { border: 1px solid var(--border-gold-subtle); border-radius: 6px; margin-bottom: 1rem; background-color: var(--bg-card); }
+        .faq-question { width: 100%; padding: 1.2rem 1.4rem; text-align: left; background: none; border: none; font-family: var(--font-serif); font-size: 1.05rem; font-weight: 600; color: var(--color-forest-green); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; padding: 0 1.4rem; color: var(--text-muted); }
+        .faq-item.active .faq-answer { max-height: 300px; padding: 0 1.4rem 1.2rem 1.4rem; }
+
+        /* Checkout Page Styles */
+        .checkout-box {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-gold-solid);
+            border-radius: 8px;
+            padding: 2rem 1.5rem;
+            box-shadow: var(--shadow-card);
+        }
+
+        .btn-back {
             background: none;
             border: none;
-            font-size: 1.5rem;
-            color: var(--text-color);
+            color: var(--color-burgundy);
+            font-size: 0.95rem;
+            font-weight: 600;
             cursor: pointer;
-        }
-
-        .cart-items-list {
-            list-style: none;
-            margin: 1rem 0;
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            display: inline-flex;
             align-items: center;
-            padding: 0.8rem 0;
-            border-bottom: 1px solid var(--border-color);
+            gap: 0.5rem;
         }
 
-        .cart-remove-x {
-            background: transparent;
-            border: none;
-            color: var(--subtext-color);
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            padding: 2px 8px;
-            line-height: 1;
-            transition: color 0.2s;
-        }
+        footer { background-color: var(--color-forest-green); color: var(--bg-parchment); padding: 2.5rem 1.5rem 1.5rem; border-top: 3px solid var(--color-antique-gold); margin-top: 3rem; text-align: center; }
 
-        .cart-remove-x:hover {
-            color: var(--danger);
-        }
-
-        #cart-empty-msg {
-            color: var(--subtext-color);
-        }
-
-        .cart-total {
-            margin-top: 1rem;
-            padding-top: 0.8rem;
-            border-top: 2px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            font-weight: bold;
-            color: var(--text-color);
+        /* Mobile Optimization */
+        @media (max-width: 600px) {
+            .header-wrapper {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .main-nav ul {
+                justify-content: center;
+                gap: 1rem;
+            }
+            .card-body {
+                padding: 1.2rem;
+            }
+            .card-footer {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div id="toast" class="notification-toast">Your course is added!</div>
+    <div class="top-bar">
+        🌱 QuietRise — Conquer Social Anxiety & Own Your Voice
+    </div>
 
     <header>
-        <div class="logo">QuietRise</div>
-        <button class="cart-icon-wrapper" onclick="toggleCart()" aria-label="Shopping Cart">
-            <svg class="shopping-bag-svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <path d="M16 10a4 4 0 0 1-8 0"></path>
-            </svg>
-            <span class="cart-badge" id="cart-count">0</span>
-        </button>
-    </header>
-
-    <div class="main-container">
-
-        <div id="page-1" class="page active">
-            <div class="hero-card">
-                <h1>Welcome to QuietRise</h1>
-                <p>Take a deep breath and explore our collection of high-quality courses designed to help you grow at your own pace.</p>
+        <div class="header-wrapper">
+            <div class="brand-logo" onclick="showPage('home')">
+                <div class="logo-crest">Q</div>
+                <div class="logo-text">QUIETRISE</div>
             </div>
 
-            <div class="scroll-section">
-                <h2>Explore Featured Courses</h2>
-                <p class="scroll-subtitle">👉 Swipe horizontally to preview course details</p>
-                
-                <div class="horizontal-scroll-container">
-                    <div class="scroll-card">
-                        <div>
-                            <h3>Course 1: Fundamentals</h3>
-                            <p>Build a strong base in core concepts with guided tutorials and step-by-step practice modules.</p>
-                        </div>
-                        <div class="preview-tag">Price: ₹299</div>
-                    </div>
-
-                    <div class="scroll-card">
-                        <div>
-                            <h3>Course 2: Advanced Masterclass</h3>
-                            <p>Take your skills to the professional level with real-world projects and complex implementations.</p>
-                        </div>
-                        <div class="preview-tag">Price: ₹499</div>
-                    </div>
-
-                    <div class="scroll-card">
-                        <div>
-                            <h3>Bonus: Career Roadmap</h3>
-                            <p>Get lifetime updates and mentorship tips with any course purchase.</p>
-                        </div>
-                        <div class="preview-tag" style="color: var(--secondary);">Free Companion</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="info-section">
-                <h3>Frequently Asked Questions</h3>
-                <div class="faq-container">
-                    
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(this)">
-                            <span>How do I access my purchased courses?</span>
-                            <span class="faq-arrow">&#9660;</span>
-                        </div>
-                        <div class="faq-answer">
-                            Once you complete your enrollment, all course materials are unlocked immediately in your personal dashboard with lifetime access.
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(this)">
-                            <span>Are there any prerequisites required?</span>
-                            <span class="faq-arrow">&#9660;</span>
-                        </div>
-                        <div class="faq-answer">
-                            Course 1 starts completely from scratch! Course 2 recommends basic knowledge of core fundamentals.
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(this)">
-                            <span>Can I learn at my own speed?</span>
-                            <span class="faq-arrow">&#9660;</span>
-                        </div>
-                        <div class="faq-answer">
-                            Yes! QuietRise is built for self-paced learning. You can study whenever and wherever it suits your schedule.
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="info-section">
-                <h3>Why Choose QuietRise?</h3>
-                <ul class="features-list">
-                    <li>✓ Self-paced learning structure</li>
-                    <li>✓ Lifetime access to materials</li>
-                    <li>✓ Practical curriculum</li>
+            <nav class="main-nav">
+                <ul>
+                    <li><a class="nav-link" onclick="showPage('home')">Home</a></li>
+                    <li><a class="nav-link" onclick="showPage('home'); document.getElementById('course').scrollIntoView();">Curriculum</a></li>
+                    <li><a class="nav-link" onclick="showPage('home'); document.getElementById('faq').scrollIntoView();">FAQ</a></li>
                 </ul>
+            </nav>
+
+            <div class="header-actions">
+                <button class="btn-account">Member Login</button>
             </div>
         </div>
+    </header>
+    <main id="page-home" class="page-view active">
+        <section class="hero-section" id="hero">
+            <div class="hero-content">
+                <div class="hero-subtitle">RECLAIM YOUR QUIET CONFIDENCE</div>
+                <h1 class="hero-title">Overcome Social Fear Without Changing Who You Are</h1>
+                <p class="hero-description">
+                    Tired of overthinking every conversation, feeling invisible, or dreading social gatherings? QuietRise gives you practical, step-by-step tools to eliminate social fear and speak up effortlessly.
+                </p>
+                <button class="btn-primary" onclick="document.getElementById('course').scrollIntoView();">Explore Fundamentals</button>
+            </div>
+        </section>
 
-        <div id="page-2" class="page">
-            <div class="courses-grid">
-                <div class="course-card">
-                    <div class="course-header">
-                        <h2>Course 1: Fundamentals</h2>
-                        <div class="course-price">₹299</div>
+        <section class="container" id="course">
+            <div class="section-header">
+                <h2>The Flagship Program</h2>
+                <p>A safe, step-by-step system designed specifically for introverted minds</p>
+            </div>
+
+            <div class="single-course-card">
+                <div class="card-image-wrap">
+                    <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=900&q=80" alt="QuietRise Fundamentals Book">
+                </div>
+                <div class="card-body">
+                    <h3 class="course-title">Fundamentals</h3>
+                    <p class="instructor-name">Mastering Social Confidence as an Introvert</p>
+                    <p style="font-size: 1.05rem; color: var(--text-dark); margin-bottom: 1.5rem;">
+                        <strong>Fundamentals</strong> is built from the ground up for people who experience social anxiety, fear of judgment, or conversation paralysis. Learn to break free from overthinking and build genuine self-assurance.
+                    </p>
+                    
+                    <h4 style="color: var(--color-forest-green); font-size: 1.1rem; margin-bottom: 0.8rem;">What You Will Master:</h4>
+                    <ul style="margin: 0 0 1.8rem 1.2rem; color: var(--text-muted); line-height: 1.9;">
+                        <li><strong>Module 1: Neutralizing Social Anxiety</strong> — Eliminate physical fear responses, racing thoughts, and pre-event panic.</li>
+                        <li><strong>Module 2: The Art of Effortless Conversation</strong> — Never run out of things to say or fear uncomfortable silences again.</li>
+                        <li><strong>Module 3: Speaking Up with Authority</strong> — Share your opinions in group settings without hesitation or trembling voices.</li>
+                        <li><strong>Module 4: Protecting Your Social Energy</strong> — Say 'No' guilt-free, set boundaries, and avoid post-social burnout.</li>
+                    </ul>
+
+                    <div class="card-footer">
+                        <div>
+                            <span style="font-size: 0.85rem; color: var(--text-muted); display: block;">One-time investment</span>
+                            <span class="price-tag">₹399</span>
+                        </div>
+                        <button class="btn-primary" onclick="enrollAndGoToCheckout('Fundamentals', 399)">Enroll in Fundamentals</button>
                     </div>
-                    <p>Learn essentials and build a solid foundation with practical hands-on examples.</p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Course 1: Fundamentals', 299)">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="container" id="faq" style="background-color: var(--bg-cream); border-radius: 8px;">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Designed with your comfort and privacy in mind</p>
+            </div>
+
+            <div class="faq-wrapper">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Will I be forced into awkward group calls or speaking in public?</span>
+                        <span>+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Absolutely not. We know how stressful forced interactions are. Fundamentals is 100% self-paced with pre-recorded video lessons and private reflection worksheets. Zero put-on-the-spot moments.</p>
+                    </div>
                 </div>
 
-                <div class="course-card">
-                    <div class="course-header">
-                        <h2>Course 2: Advanced Masterclass</h2>
-                        <div class="course-price">₹499</div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Does this try to turn introverts into loud extroverts?</span>
+                        <span>+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>No. Being introverted is a superpower, not a flaw. This course focuses on eliminating the fear and anxiety that hold you back so you can be confident while remaining quiet, thoughtful, and authentic.</p>
                     </div>
-                    <p>Unlock advanced techniques, complete real-world projects, and master the stack.</p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Course 2: Advanced Masterclass', 499)">Add to Cart</button>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>How quickly can I expect to see results?</span>
+                        <span>+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Most students report a noticeable drop in anxiety during their very first week after learning our core mindset re-framing and breathing techniques.</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
+    </main>
 
-    </div>
+    <main id="page-checkout" class="page-view">
+        <div class="container">
+            <button class="btn-back" onclick="showPage('home')">← Back to Course Details</button>
+            
+            <div class="checkout-box">
+                <h2 style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--color-forest-green);">Complete Your Enrollment</h2>
+                <p style="margin-bottom: 1.8rem;">Take your first step toward quiet confidence and overcoming social anxiety.</p>
 
-    <div class="nav-footer">
-        <button id="prev-btn" class="nav-btn" onclick="changePage(-1)" disabled>Previous</button>
-        <button id="next-btn" class="nav-btn" onclick="changePage(1)">Next</button>
-    </div>
+                <div style="background-color: var(--bg-cream); padding: 1.2rem; border-radius: 6px; border: 1px solid var(--border-gold-subtle); margin-bottom: 1.8rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <h3 style="font-size: 1.2rem; color: var(--color-forest-green);" id="selectedCourseTitle">Fundamentals</h3>
+                        <span style="font-size: 1.4rem; font-weight: 700; color: var(--color-forest-green); font-family: var(--font-serif);" id="selectedCoursePrice">₹399</span>
+                    </div>
+                    <p style="font-size: 0.88rem; margin-bottom: 0; color: var(--text-muted);">Includes lifetime access to all 4 core modules, worksheets, and updates.</p>
+                </div>
 
-    <div id="cart-modal" class="modal-overlay">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>Your Cart</h3>
-                <button class="close-btn" onclick="toggleCart()">&times;</button>
+                <form onsubmit="handleRegistration(event)">
+                    <div style="margin-bottom: 1.2rem;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.4rem; color: var(--text-dark);">Full Name</label>
+                        <input type="text" placeholder="Enter your name" required style="width: 100%; padding: 0.8rem; border: 1px solid var(--border-gold-subtle); border-radius: 4px; background: var(--bg-parchment);">
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.4rem; color: var(--text-dark);">Email Address</label>
+                        <input type="email" placeholder="your.email@example.com" required style="width: 100%; padding: 0.8rem; border: 1px solid var(--border-gold-subtle); border-radius: 4px; background: var(--bg-parchment);">
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="width: 100%; padding: 1rem; font-size: 1rem;" id="checkoutBtn">Confirm & Begin Course (₹399)</button>
+                </form>
             </div>
-            <ul id="cart-list" class="cart-items-list"></ul>
-            <div id="cart-empty-msg">Your cart is empty.</div>
-            <div id="cart-total-container" class="cart-total" style="display: none;">
-                <span>Total:</span>
-                <span id="cart-total">₹0</span>
-            </div>
         </div>
-    </div>
+    </main>
+
+    <footer>
+        <h3 style="font-family: var(--font-display); color: var(--color-antique-gold); font-size: 1.3rem; margin-bottom: 0.5rem;">QUIETRISE</h3>
+        <p style="color: rgba(253, 251, 247, 0.7); font-size: 0.9rem; margin-bottom: 1.2rem;">Helping introverts overcome social fear and lead with quiet strength.</p>
+        <p style="color: rgba(253, 251, 247, 0.5); font-size: 0.8rem;">&copy; 2026 QuietRise. All rights reserved.</p>
+    </footer>
 
     <script>
-        let currentPage = 1;
-        const totalPages = 2;
-        let cart = [];
-
-        function changePage(direction) {
-            currentPage += direction;
-
-            document.querySelectorAll('.page').forEach((page, index) => {
-                page.classList.toggle('active', index + 1 === currentPage);
+        // Page Navigation Function
+        function showPage(pageId) {
+            document.querySelectorAll('.page-view').forEach(page => {
+                page.classList.remove('active');
             });
-
-            document.getElementById('prev-btn').disabled = (currentPage === 1);
-            document.getElementById('next-btn').disabled = (currentPage === totalPages);
-
+            document.getElementById(`page-${pageId}`).classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function toggleFaq(element) {
-            const faqItem = element.parentElement;
-            faqItem.classList.toggle('active');
+        // Add to Cart & Navigate to Page 2
+        function enrollAndGoToCheckout(title, price) {
+            document.getElementById('selectedCourseTitle').textContent = title;
+            document.getElementById('selectedCoursePrice').textContent = '₹' + price;
+            document.getElementById('checkoutBtn').textContent = `Confirm & Begin Course (₹${price})`;
+            showPage('checkout');
         }
 
-        function toggleCart() {
-            const modal = document.getElementById('cart-modal');
-            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        // Form Submit Action
+        function handleRegistration(event) {
+            event.preventDefault();
+            alert('Congratulations! Your enrollment in QuietRise Fundamentals is successful. Check your email for login details.');
+            showPage('home');
         }
 
-        function showNotification(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.classList.add('show');
-
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2500);
-        }
-
-        function addToCart(title, price) {
-            const existing = cart.find(item => item.title === title);
-            if (!existing) {
-                cart.push({ title, price });
-                updateCartUI();
-                showNotification(`${title} is added to the cart!`);
-            } else {
-                showNotification('This course is already in your cart.');
-            }
-        }
-
-        function removeFromCart(title) {
-            cart = cart.filter(item => item.title !== title);
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            const countElement = document.getElementById('cart-count');
-            const cartList = document.getElementById('cart-list');
-            const emptyMsg = document.getElementById('cart-empty-msg');
-            const totalContainer = document.getElementById('cart-total-container');
-            const totalElement = document.getElementById('cart-total');
-
-            countElement.textContent = cart.length;
-            cartList.innerHTML = '';
-
-            if (cart.length === 0) {
-                emptyMsg.style.display = 'block';
-                totalContainer.style.display = 'none';
-            } else {
-                emptyMsg.style.display = 'none';
-                totalContainer.style.display = 'flex';
-                
-                let totalPrice = 0;
-                cart.forEach(item => {
-                    totalPrice += item.price;
-                    const li = document.createElement('li');
-                    li.className = 'cart-item';
-                    li.innerHTML = `
-                        <div>
-                            <div>${item.title}</div>
-                            <strong style="color: var(--secondary)">₹${item.price}</strong>
-                        </div>
-                        <button class="cart-remove-x" onclick="removeFromCart('${item.title}')" aria-label="Remove item">×</button>
-                    `;
-                    cartList.appendChild(li);
-                });
-
-                totalElement.textContent = `₹${totalPrice}`;
-            }
-        }
+        // FAQ Accordion Toggle
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.querySelector('.faq-question').addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                if (!isActive) item.classList.add('active');
+            });
+        });
     </script>
 </body>
 </html>
