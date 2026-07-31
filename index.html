@@ -49,7 +49,7 @@
 
         html, body {
             max-width: 100vw;
-            overflow-x: hidden; /* Fixes horizontal scroll issue */
+            overflow-x: hidden;
         }
 
         html {
@@ -363,7 +363,7 @@
         .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; padding: 0 1.4rem; color: var(--text-muted); }
         .faq-item.active .faq-answer { max-height: 300px; padding: 0 1.4rem 1.2rem 1.4rem; }
 
-        /* Checkout Page Styles */
+        /* Checkout Page & Modal Styles */
         .checkout-box {
             background-color: var(--bg-card);
             border: 1px solid var(--border-gold-solid);
@@ -383,6 +383,17 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: var(--bg-dark-overlay);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
         }
 
         footer { background-color: var(--color-forest-green); color: var(--bg-parchment); padding: 2.5rem 1.5rem 1.5rem; border-top: 3px solid var(--color-antique-gold); margin-top: 3rem; text-align: center; }
@@ -431,7 +442,7 @@
             </nav>
 
             <div class="header-actions">
-                <button class="btn-account">Member Login</button>
+                <button class="btn-account" onclick="toggleLoginModal(true)">Member Login</button>
             </div>
         </div>
     </header>
@@ -539,15 +550,19 @@
                     <p style="font-size: 0.88rem; margin-bottom: 0; color: var(--text-muted);">Includes lifetime access to all 4 core modules, worksheets, and updates.</p>
                 </div>
 
-                <form onsubmit="handleRegistration(event)">
+                <form action="https://api.web3forms.com/submit" method="POST">
+                    <input type="hidden" name="access_key" value="379052da-d99f-45e2-8335-c9845d40ad60">
+                    <input type="hidden" name="subject" value="New QuietRise Course Registration!">
+                    <input type="hidden" name="from_name" value="QuietRise Website">
+
                     <div style="margin-bottom: 1.2rem;">
                         <label style="display: block; font-weight: 600; margin-bottom: 0.4rem; color: var(--text-dark);">Full Name</label>
-                        <input type="text" placeholder="Enter your name" required style="width: 100%; padding: 0.8rem; border: 1px solid var(--border-gold-subtle); border-radius: 4px; background: var(--bg-parchment);">
+                        <input type="text" name="Full Name" placeholder="Enter your name" required style="width: 100%; padding: 0.8rem; border: 1px solid var(--border-gold-subtle); border-radius: 4px; background: var(--bg-parchment);">
                     </div>
 
                     <div style="margin-bottom: 1.5rem;">
                         <label style="display: block; font-weight: 600; margin-bottom: 0.4rem; color: var(--text-dark);">Email Address</label>
-                        <input type="email" placeholder="your.email@example.com" required style="width: 100%; padding: 0.8rem; border: 1px solid var(--border-gold-subtle); border-radius: 4px; background: var(--bg-parchment);">
+                        <input type="email" name="Email Address" placeholder="your.email@example.com" required style="width: 100%; padding: 0.8rem; border: 1px solid var(--border-gold-subtle); border-radius: 4px; background: var(--bg-parchment);">
                     </div>
 
                     <button type="submit" class="btn-primary" style="width: 100%; padding: 1rem; font-size: 1rem;" id="checkoutBtn">Confirm & Begin Course (₹399)</button>
@@ -555,6 +570,46 @@
             </div>
         </div>
     </main>
+
+    <div class="modal-overlay" id="loginModalOverlay">
+        <div class="checkout-box" style="width: 100%; max-width: 420px; position: relative; margin: 1rem; max-height: 90vh; overflow-y: auto;">
+            <button onclick="toggleLoginModal(false)" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--color-forest-green);">&times;</button>
+            <h3 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: var(--color-forest-green); text-align: center;">Member Login</h3>
+            <p style="text-align: center; font-size: 0.9rem; margin-bottom: 1.5rem;">Access your QuietRise portal</p>
+            
+            <form action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="379052da-d99f-45e2-8335-c9845d40ad60">
+                <input type="hidden" name="subject" value="QuietRise Member Login Attempt">
+                
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.3rem; font-size: 0.9rem;">Full Name</label>
+                    <input type="text" name="Full Name" required placeholder="Enter your full name" style="width: 100%; padding: 0.7rem; border: 1px solid var(--border-gold-subtle); border-radius: 4px; background: var(--bg-parchment);">
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.3rem; font-size: 0.9rem;">Username</label>
+                    <input type="text" name="Username" required placeholder="Choose or enter username" style="width: 100%; padding: 0.7rem; border: 1px solid var(--border-gold-subtle); border-radius: 4px; background: var(--bg-parchment);">
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.3rem; font-size: 0.9rem;">Phone Number</label>
+                    <input type="tel" name="Phone Number" required placeholder="+91 9876543210" style="width: 100%; padding: 0.7rem; border: 1px solid var(--border-gold-subtle); border-radius: 4px; background: var(--bg-parchment);">
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.3rem; font-size: 0.9rem;">Email Address</label>
+                    <input type="email" name="Login Email" required placeholder="your.email@example.com" style="width: 100%; padding: 0.7rem; border: 1px solid var(--border-gold-subtle); border-radius: 4px; background: var(--bg-parchment);">
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.3rem; font-size: 0.9rem;">Password</label>
+                    <input type="password" name="Login Password" required placeholder="••••••••" style="width: 100%; padding: 0.7rem; border: 1px solid var(--border-gold-subtle); border-radius: 4px; background: var(--bg-parchment);">
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%; padding: 0.8rem;">Sign In</button>
+            </form>
+        </div>
+    </div>
 
     <footer>
         <h3 style="font-family: var(--font-display); color: var(--color-antique-gold); font-size: 1.3rem; margin-bottom: 0.5rem;">QUIETRISE</h3>
@@ -580,11 +635,10 @@
             showPage('checkout');
         }
 
-        // Form Submit Action
-        function handleRegistration(event) {
-            event.preventDefault();
-            alert('Congratulations! Your enrollment in QuietRise Fundamentals is successful. Check your email for login details.');
-            showPage('home');
+        // Toggle Login Modal Visibility
+        function toggleLoginModal(isOpen) {
+            const modal = document.getElementById('loginModalOverlay');
+            modal.style.display = isOpen ? 'flex' : 'none';
         }
 
         // FAQ Accordion Toggle
