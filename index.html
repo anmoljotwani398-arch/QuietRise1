@@ -228,10 +228,10 @@
             text-decoration: none;
         }
 
-        /* Non-clickable button variant for showcase */
-        .btn-showpiece {
-            pointer-events: none;
-            opacity: 0.9;
+        .btn-primary:hover {
+            background-color: var(--color-forest-dark);
+            transform: translateY(-2px);
+            color: var(--bg-parchment);
         }
 
         .container {
@@ -313,6 +313,26 @@
             font-weight: 700;
             color: var(--color-forest-green);
             font-family: var(--font-serif);
+        }
+
+        /* Form Container Styling */
+        .form-section {
+            display: none;
+            margin-top: 2rem;
+            padding: 1.5rem 1rem;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-gold-subtle);
+            border-radius: 8px;
+            box-shadow: var(--shadow-card);
+            text-align: center;
+        }
+
+        .form-section iframe {
+            width: 100%;
+            max-width: 640px;
+            height: 690px;
+            border: none;
+            border-radius: 6px;
         }
 
         /* FAQ Styling */
@@ -408,8 +428,13 @@
                             <span style="font-size: 0.85rem; color: var(--text-muted); display: block;">One-time investment</span>
                             <span class="price-tag">₹399</span>
                         </div>
-                        <button class="btn-primary btn-showpiece" disabled>Enroll in Fundamentals</button>
+                        <button class="btn-primary" onclick="toggleEnrollmentForm()">Enroll in Fundamentals</button>
                     </div>
+                </div>
+
+                <div id="enroll-form-container" class="form-section">
+                    <h3 style="margin-bottom: 1rem; color: var(--color-forest-green);">Complete Your Registration</h3>
+                    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdmTq8LAhA166hjyeNx_DAJpnyL4oAEQfg3Ouw_FlWYToPMrA/viewform?embedded=true" width="640" height="690" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
                 </div>
             </div>
         </section>
@@ -461,6 +486,18 @@
     </footer>
 
     <script>
+        // Toggle and scroll to Enrollment Form
+        function toggleEnrollmentForm() {
+            const formContainer = document.getElementById('enroll-form-container');
+            if (formContainer.style.display === 'block') {
+                formContainer.style.display = 'none';
+            } else {
+                formContainer.style.display = 'block';
+                formContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Accordion functionality for FAQ
         document.querySelectorAll('.faq-item').forEach(item => {
             item.querySelector('.faq-question').addEventListener('click', () => {
                 const isActive = item.classList.contains('active');
