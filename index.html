@@ -64,20 +64,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        .page-view {
-            display: none;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-
-        .page-view.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         h1, h2, h3, h4 {
             font-family: var(--font-serif);
             color: var(--color-forest-green);
@@ -96,11 +82,6 @@
             color: inherit;
             text-decoration: none;
             transition: var(--transition-smooth);
-        }
-
-        button, input {
-            font-family: inherit;
-            font-size: inherit;
         }
 
         ::-webkit-scrollbar { width: 8px; }
@@ -231,6 +212,7 @@
         }
 
         .btn-primary {
+            display: inline-block;
             background-color: var(--color-forest-green);
             color: var(--bg-parchment);
             padding: 0.85rem 2rem;
@@ -242,12 +224,14 @@
             letter-spacing: 1px;
             font-weight: 600;
             transition: var(--transition-smooth);
-            max-width: 100%;
+            text-align: center;
+            text-decoration: none;
         }
 
         .btn-primary:hover {
             background-color: var(--color-forest-dark);
             transform: translateY(-2px);
+            color: var(--bg-parchment);
         }
 
         .container {
@@ -338,28 +322,6 @@
         .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; padding: 0 1.4rem; color: var(--text-muted); }
         .faq-item.active .faq-answer { max-height: 300px; padding: 0 1.4rem 1.2rem 1.4rem; }
 
-        /* Checkout Page Styles */
-        .checkout-box {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-gold-solid);
-            border-radius: 8px;
-            padding: 1.8rem 1.2rem;
-            box-shadow: var(--shadow-card);
-        }
-
-        .btn-back {
-            background: none;
-            border: none;
-            color: var(--color-burgundy);
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-bottom: 1.5rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
         footer { background-color: var(--color-forest-green); color: var(--bg-parchment); padding: 2.5rem 1.5rem 1.5rem; border-top: 3px solid var(--color-antique-gold); margin-top: 3rem; text-align: center; }
 
         /* Mobile Adjustments */
@@ -389,22 +351,23 @@
 
     <header>
         <div class="header-wrapper">
-            <div class="brand-logo" onclick="showPage('home')">
+            <div class="brand-logo" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">
                 <div class="logo-crest">Q</div>
                 <div class="logo-text">QUIETRISE</div>
             </div>
 
             <nav class="main-nav">
                 <ul>
-                    <li><a class="nav-link" onclick="showPage('home')">Home</a></li>
-                    <li><a class="nav-link" onclick="showPage('home'); document.getElementById('course').scrollIntoView();">Curriculum</a></li>
-                    <li><a class="nav-link" onclick="showPage('home'); document.getElementById('faq').scrollIntoView();">FAQ</a></li>
+                    <li><a class="nav-link" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">Home</a></li>
+                    <li><a class="nav-link" onclick="document.getElementById('course').scrollIntoView();">Curriculum</a></li>
+                    <li><a class="nav-link" onclick="document.getElementById('faq').scrollIntoView();">FAQ</a></li>
                 </ul>
             </nav>
         </div>
     </header>
-    <main id="page-home" class="page-view active">
-        <section class="hero-section" id="hero">
+
+    <main>
+        <section class="hero-section">
             <div class="hero-content">
                 <div class="hero-subtitle">RECLAIM YOUR QUIET CONFIDENCE</div>
                 <h1 class="hero-title">Overcome Social Fear Without Changing Who You Are</h1>
@@ -445,7 +408,7 @@
                             <span style="font-size: 0.85rem; color: var(--text-muted); display: block;">One-time investment</span>
                             <span class="price-tag">₹399</span>
                         </div>
-                        <button class="btn-primary" onclick="enrollAndGoToCheckout('Fundamentals', 399)">Enroll in Fundamentals</button>
+                        <button class="btn-primary">Enroll in Fundamentals</button>
                     </div>
                 </div>
             </div>
@@ -460,21 +423,11 @@
             <div class="faq-wrapper">
                 <div class="faq-item">
                     <button class="faq-question">
-                        <span>Will I be forced into awkward group calls or speaking in public?</span>
+                        <span>How is QuietRise different from reading books or watching free YouTube videos on confidence?</span>
                         <span>+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>Absolutely not. We know how stressful forced interactions are. Fundamentals is 100% self-paced with pre-recorded video lessons and private reflection worksheets. Zero put-on-the-spot moments.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <button class="faq-question">
-                        <span>Does this try to turn introverts into loud extroverts?</span>
-                        <span>+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>No. Being introverted is a superpower, not a flaw. This course focuses on eliminating the fear and anxiety that hold you back so you can be confident while remaining quiet, thoughtful, and authentic.</p>
+                        <p>We provide live interactive classes and give you hands-on tasks so you can directly counter and overcome your fear in real-time, rather than just consuming passive content.</p>
                     </div>
                 </div>
 
@@ -487,45 +440,18 @@
                         <p>Most students report a noticeable drop in anxiety during their very first week after learning our core mindset re-framing and breathing techniques.</p>
                     </div>
                 </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Is this for severe social anxiety, or just for quiet people?</span>
+                        <span>+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>It’s for both! Whether you get nervous and sweaty before talking to people, or you just struggle to speak up in groups, this course gives you easy steps to help you feel confident.</p>
+                    </div>
+                </div>
             </div>
         </section>
-    </main>
-
-    <main id="page-checkout" class="page-view">
-        <div class="container">
-            <button class="btn-back" onclick="showPage('home')">← Back to Course Details</button>
-            
-            <div class="checkout-box">
-                <h2 style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--color-forest-green);">Complete Your Enrollment</h2>
-                <p style="margin-bottom: 1.8rem;">Take your first step toward quiet confidence and overcoming social anxiety.</p>
-
-                <div style="background-color: var(--bg-cream); padding: 1.2rem; border-radius: 6px; border: 1px solid var(--border-gold-subtle); margin-bottom: 1.8rem;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 0.5rem;">
-                        <h3 style="font-size: 1.2rem; color: var(--color-forest-green);" id="selectedCourseTitle">Fundamentals</h3>
-                        <span style="font-size: 1.4rem; font-weight: 700; color: var(--color-forest-green); font-family: var(--font-serif);" id="selectedCoursePrice">₹399</span>
-                    </div>
-                    <p style="font-size: 0.88rem; margin-bottom: 0; color: var(--text-muted);">Includes lifetime access to all 4 core modules, worksheets, and updates.</p>
-                </div>
-
-                <form action="https://api.web3forms.com/submit" method="POST">
-                    <input type="hidden" name="access_key" value="379052da-d99f-45e2-8335-c9845d40ad60">
-                    <input type="hidden" name="subject" value="New QuietRise Course Registration!">
-                    <input type="hidden" name="from_name" value="QuietRise Website">
-
-                    <div style="margin-bottom: 1.2rem;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 0.4rem; color: var(--text-dark);">Full Name</label>
-                        <input type="text" name="Full Name" placeholder="Enter your name" required style="width: 100%; padding: 0.8rem; border: 1px solid var(--border-gold-subtle); border-radius: 4px; background: var(--bg-parchment);">
-                    </div>
-
-                    <div style="margin-bottom: 1.5rem;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 0.4rem; color: var(--text-dark);">Email Address</label>
-                        <input type="email" name="Email Address" placeholder="your.email@example.com" required style="width: 100%; padding: 0.8rem; border: 1px solid var(--border-gold-subtle); border-radius: 4px; background: var(--bg-parchment);">
-                    </div>
-
-                    <button type="submit" class="btn-primary" style="width: 100%; padding: 1rem; font-size: 1rem;" id="checkoutBtn">Confirm & Begin Course (₹399)</button>
-                </form>
-            </div>
-        </div>
     </main>
 
     <footer>
@@ -535,21 +461,6 @@
     </footer>
 
     <script>
-        function showPage(pageId) {
-            document.querySelectorAll('.page-view').forEach(page => {
-                page.classList.remove('active');
-            });
-            document.getElementById(`page-${pageId}`).classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function enrollAndGoToCheckout(title, price) {
-            document.getElementById('selectedCourseTitle').textContent = title;
-            document.getElementById('selectedCoursePrice').textContent = '₹' + price;
-            document.getElementById('checkoutBtn').textContent = `Confirm & Begin Course (₹${price})`;
-            showPage('checkout');
-        }
-
         document.querySelectorAll('.faq-item').forEach(item => {
             item.querySelector('.faq-question').addEventListener('click', () => {
                 const isActive = item.classList.contains('active');
