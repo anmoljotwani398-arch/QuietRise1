@@ -228,10 +228,10 @@
             text-decoration: none;
         }
 
-        .btn-primary:hover {
-            background-color: var(--color-forest-dark);
-            transform: translateY(-2px);
-            color: var(--bg-parchment);
+        /* Non-clickable button variant for showcase */
+        .btn-showpiece {
+            pointer-events: none;
+            opacity: 0.9;
         }
 
         .container {
@@ -408,7 +408,7 @@
                             <span style="font-size: 0.85rem; color: var(--text-muted); display: block;">One-time investment</span>
                             <span class="price-tag">₹399</span>
                         </div>
-                        <button class="btn-primary">Enroll in Fundamentals</button>
+                        <button class="btn-primary btn-showpiece" disabled>Enroll in Fundamentals</button>
                     </div>
                 </div>
             </div>
