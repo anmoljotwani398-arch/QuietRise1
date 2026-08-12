@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Banner Plane</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #87ceeb 0%, #b3e0f2 60%, #cdeffc 100%);
+  }
+  canvas {
+    display: block;
+  }
+</style>
+</head>
+<body>
+<canvas id="sky"></canvas>
+
+<script>
+const canvas = document.getElementById('sky');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+let planeX = canvas.width + 300;
+
+const bannerText = "happy birthday may God blast u";
+
+const planeY_base = () => canvas.height * 0.35;
+let bob = 0;
+
+// simple clouds for background flavor
+const clouds = [];
+for (let i = 0; i < 6; i++) {
+  clouds.push({
+    x: Math.random() * 2000,
+    y: 40 + Math.random() * (window.innerHeight * 0.5),
+    scale: 0.5 + Math.random() * 1.2,
+    speed: 0.2 + Math.random() * 0.3
+  });
+}
+
+function drawCloud(c) {
+  ctx.save();
+  ctx.translate(c.x, c.y);
+  ctx.scale(c.scale, c.scale);
+  ctx.fillStyle = "rgba(255,255,255,0.85)";
+  ctx.beginPath();
+  ctx.arc(0, 0, 20, 0, Math.PI * 2);
+  ctx.arc(25, -10, 25, 0, Math.PI * 2);
+  ctx.arc(50, 0, 20, 0, Math.PI * 2);
+  ctx.arc(25, 12, 22, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawPlane(x, y) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(-1, 1); // face left
+
+  // propeller blur
+  ctx.strokeStyle = "rgba(60,60,60,0.6)";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.ellipse(58, 0, 3, 14, 0, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // fuselage
+  ctx.fillStyle = "#e63946";
+  ctx.beginPath();
+  ctx.moveTo(55, 0);
+  ctx.quadraticCurveTo(20, -12, -40, -8);
+  ctx.quadraticCurveTo(-55, 0, -40, 8);
+  ctx.quadraticCurveTo(20, 12, 55, 0);
+  ctx.fill();
+
+  // cockpit
+  ctx.fillStyle = "#a8dadc";
+  ctx.beginPath();
+  ctx.ellipse(10, -6, 8, 5, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // tail fin
+  ctx.fillStyle = "#1d3557";
+  ctx.beginPath();
+  ctx.moveTo(-38, -6);
+  ctx.lineTo(-52, -24);
+  ctx.lineTo(-30, -6);
+  ctx.fill();
+
+  // wings
+  ctx.fillStyle = "#f1faee";
+  ctx.beginPath();
+  ctx.moveTo(0, -4);
+  ctx.lineTo(-10, -30);
+  ctx.lineTo(5, -6);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(0, 4);
+  ctx.lineTo(-10, 30);
+  ctx.lineTo(5, 6);
+  ctx.fill();
+
+  ctx.restore();
+}
+
+function drawBanner(x, y, text) {
+  ctx.save();
+
+  // measure text to size banner
+  ctx.font = "bold 26px 'Segoe UI', Arial, sans-serif";
+  const padding = 24;
+  const textWidth = ctx.measureText(text).width;
+  const bannerWidth = textWidth + padding * 2;
+  const bannerHeight = 46;
+
+  const attachX = x + 55; // tail of plane (now on the right, since plane faces left)
+  const attachY = y;
+  const bannerStartX = attachX + 40;
+  const wave = Math.sin(Date.now() / 250) * 4;
+
+  // tow lines
+  ctx.strokeStyle = "#333";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(attachX, attachY - 4);
+  ctx.lineTo(bannerStartX, attachY - 6 + wave);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(attachX, attachY + 4);
+  ctx.lineTo(bannerStartX, attachY + bannerHeight - 6 + wave);
+  ctx.stroke();
+
+  // banner rectangle with slight wave, extending to the right
+  const bx = bannerStartX;
+  const by = attachY - bannerHeight / 2 + wave;
+
+  ctx.fillStyle = "#ffe066";
+  ctx.strokeStyle = "#d9a441";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(bx, by);
+  ctx.lineTo(bx + bannerWidth, by + wave * 0.3);
+  ctx.lineTo(bx + bannerWidth, by + bannerHeight + wave * 0.3);
+  ctx.lineTo(bx, by + bannerHeight);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
+  // banner text
+  ctx.fillStyle = "#333";
+  ctx.textBaseline = "middle";
+  ctx.fillText(text, bx + padding, by + bannerHeight / 2 + wave * 0.15);
+
+  ctx.restore();
+
+  return bannerWidth + 95; // total length used, so we know when it's fully offscreen
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // clouds
+  for (const c of clouds) {
+    c.x += c.speed;
+    if (c.x > canvas.width + 100) c.x = -150;
+    drawCloud(c);
+  }
+
+  // sun
+  ctx.fillStyle = "rgba(255,250,205,0.9)";
+  ctx.beginPath();
+  ctx.arc(canvas.width - 90, 80, 45, 0, Math.PI * 2);
+  ctx.fill();
+
+  bob += 0.05;
+  const y = planeY_base() + Math.sin(bob) * 10;
+
+  const bannerLength = drawBanner(planeX, y, bannerText);
+  drawPlane(planeX, y);
+
+  planeX -= 2.2;
+
+  if (planeX + bannerLength < -50) {
+    planeX = canvas.width + bannerLength + 50;
+  }
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+</body>
+</html>
